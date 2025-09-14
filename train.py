@@ -1,7 +1,14 @@
 # train.py
+# import sys, os
+# sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# print(sys.path)
+
+import data
+from model import BertMultiLabelClassifier
 import torch
 from torch.utils.data import DataLoader
-from transformers import AdamW, get_linear_schedule_with_warmup
+from transformers import get_linear_schedule_with_warmup
+from torch.optim import AdamW
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import numpy as np
 from tqdm import tqdm
@@ -32,7 +39,7 @@ def train_epoch(model, dataloader, optimizer, scheduler, device, class_weights=N
         outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
         loss = outputs['loss']
         if class_weights is not None:
-            loss_fct = nn.BCEWithLogitsLoss(pos_weight=class_weights.to(device))
+            loss_fct = torch.nn.BCEWithLogitsLoss(pos_weight=class_weights.to(device))
             loss = loss_fct(outputs['logits'], labels)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
@@ -93,7 +100,7 @@ def run_kfold_training(config, comments, labels, tokenizer, device):
             train_loader = DataLoader(train_dataset, batch_size=config.batch, shuffle=True)
             val_loader = DataLoader(val_dataset, batch_size=config.batch, shuffle=False)
 
-            model = model.BertMultiLabelClassifier(config.model_path, len(data.LABEL_COLUMNS))
+            model = BertMultiLabelClassifier(config.model_path, len(data.LABEL_COLUMNS))
             if config.freeze_base:
                 model.freeze_base_layers(model)
             model.to(device)
