@@ -1,4 +1,3 @@
-# main.py
 import torch
 from transformers import BertTokenizer
 import data
