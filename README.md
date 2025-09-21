@@ -23,13 +23,13 @@ Run fine-tuning via `main.py` with command-line arguments. All experiments log t
 ### Running in Google Colab (Recommended for Free GPU)
 1. Open Colab: [colab.research.google.com](https://colab.research.google.com).
 2. Enable GPU: Runtime > Change runtime type > T4 GPU.
-3. Clone repo: `!git clone https://github.com/yourusername/banglabert-cyberbullying-finetuning.git`
-4. `%cd banglabert-cyberbullying-finetuning`
+3. Clone repo: `!git clone https://github.com/SaifSiddique009/Finetune-Bangla-BERT-on-Bangla-Cyber-Bullying-Data.git`
+4. `%cd Finetun-Bangla-BERT-on-Bangla-Cyber-Bullying-Data`
 5. Install deps: `!pip install -r requirements.txt`
 6. Pick an experiment from `experiments.py` (open the file, copy a dict's values).
 7. Run command (replace with your values):
    ```
-   !python main.py --batch 32 --lr 2e-5 --epochs 20 --author_name 'yourname' --dataset_path '/content/drive/MyDrive/dataset.csv' --freeze_base --mlflow_experiment_name 'Bangla-Cyberbullying-Experiments'
+   !python main.py --batch 32 --lr 2e-5 --epochs 20 --author_name 'yourname' --dataset_path 'data\1_Multilablel_Cyberbully_Data.csv' --freeze_base --mlflow_experiment_name 'Bangla-Cyberbullying-Experiments'
    ```
    - Full args:
      - `--batch`: Batch size (e.g., 16, 32, 64).
@@ -40,17 +40,17 @@ Run fine-tuning via `main.py` with command-line arguments. All experiments log t
      - `--model_path`: Pre-trained model (default: 'sagorsarker/bangla-bert-base').
      - `--num_folds`: Folds for CV (default: 5).
      - `--max_length`: Token max length (default: 128).
-     - `--freeze_base`: Freeze BERT base layers (flag, no value needed).
+     - `--freeze_base`: Freeze BERT base layers.
      - `--mlflow_experiment_name`: Experiment name (default: 'Bangla-BERT-Cyberbullying').
 
 8. After run: Zip and download MLflow logs:
    ```
-   !zip -r mlruns.zip ./mlruns
+   !zip -r mlruns_{your name}.zip ./mlruns
    ```
-   - Download `mlruns.zip` from Colab's files sidebar.
+   - Download `mlruns_{your name}.zip` from Colab's files sidebar.
 
 ### Viewing Results Locally
-1. Unzip `mlruns.zip` to a local directory (e.g., `experiments/mlruns`).
+1. Unzip `mlruns_{your name}.zip` to a local directory (e.g., `experiments/mlruns_tarikh`).
 2. In VS Code or terminal: Navigate to the dir, activate venv, run:
    ```
    mlflow ui
