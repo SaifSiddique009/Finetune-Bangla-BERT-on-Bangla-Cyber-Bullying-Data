@@ -24,7 +24,7 @@ Run fine-tuning via `main.py` with command-line arguments. All experiments log t
 1. Open Colab: [colab.research.google.com](https://colab.research.google.com).
 2. Enable GPU: Runtime > Change runtime type > T4 GPU.
 3. Clone repo: `!git clone https://github.com/SaifSiddique009/Finetune-Bangla-BERT-on-Bangla-Cyber-Bullying-Data.git`
-4. `%cd Finetun-Bangla-BERT-on-Bangla-Cyber-Bullying-Data`
+4. `%cd Finetune-Bangla-BERT-on-Bangla-Cyber-Bullying-Data`
 5. Install deps: `!pip install -r requirements.txt`
 6. Pick an experiment from `experiments.py` (open the file, copy a dict's values).
 7. Run command (replace with your values):
