@@ -25,11 +25,25 @@ Run fine-tuning via `main.py` with command-line arguments. All experiments log t
 2. Enable GPU: Runtime > Change runtime type > T4 GPU.
 3. Clone repo: `!git clone https://github.com/SaifSiddique009/Finetune-Bangla-BERT-on-Bangla-Cyber-Bullying-Data.git`
 4. `%cd Finetune-Bangla-BERT-on-Bangla-Cyber-Bullying-Data`
-5. Install deps: `!pip install -q transformers torch scikit-learn pandas numpy tqdm mlflow`
+5. Install deps: `!!pip install -q torch transformers scikit-learn pandas numpy tqdm mlflow iterative-stratification`
 6. Pick an experiment from `experiments.py` (open the file, copy a dict's values).
 7. Run command (replace with your values):
    ```
-   !python main.py --batch 32 --lr 2e-5 --epochs 20 --author_name 'yourname' --dataset_path 'data\1_Multilablel_Cyberbully_Data.csv' --freeze_base --mlflow_experiment_name 'Bangla-Cyberbullying-Experiments'
+   !python main.py \
+    --author_name "saif" \
+    --dataset_path "/kaggle/working/temp/1_Multilablel_Cyberbully_Data.csv" \
+    --batch 32 \
+    --lr 5e-5 \
+    --epochs 2 \
+    --model_path "sagorsarker/bangla-bert-base" \
+    --stratification_type multilabel \
+    --seed 42 \
+    --dropout 0.2 \
+    --weight_decay 0.02 \
+    --warmup_ratio 0.2 \
+    --gradient_clip_norm 2.0 \
+    --early_stopping_patience 2 \
+    --num_folds 2
    ```
    - Full args:
      - `--batch`: Batch size (e.g., 16, 32, 64).
@@ -40,17 +54,24 @@ Run fine-tuning via `main.py` with command-line arguments. All experiments log t
      - `--model_path`: Pre-trained model (default: 'sagorsarker/bangla-bert-base').
      - `--num_folds`: Folds for CV (default: 5).
      - `--max_length`: Token max length (default: 128).
+     - `--stratification_type`: Stratification type (default: 'multilable').
+     - `--seed`: Random seed (default: 42).
+     - `--dropout`: Dropout rate for classification head (default: 0.1).
+     - `--weight_decay`: Weight decay for AdamW (default: 0.01).
+     - `warmup_ratio`: Ratio of total steps for learning rate warmup (default: 0.1).
+     - `--gradient_clip_norm`: Maximum norm for gradient clipping (default: 1.0).
+     - `--early_stopping_patience`: Number of epochs without improvement before early stopping (default: 5).
      - `--freeze_base`: Freeze BERT base layers.
      - `--mlflow_experiment_name`: Experiment name (default: 'Bangla-BERT-Cyberbullying').
 
 8. After run: Zip and download MLflow logs:
    ```
-   !zip -r mlruns_{your name}.zip ./mlruns
+   !zip -r mlruns_saif_batch_16_lr_2e-5_epochs_10_dropout_0.1.zip ./mlruns
    ```
-   - Download `mlruns_{your name}.zip` from Colab's files sidebar.
+   - Download `mlruns_saif_batch_16_lr_2e-5_epochs_10_dropout_0.1.zip` from Colab's files sidebar.
 
 ### Viewing Results Locally
-1. Unzip `mlruns_{your name}.zip` to a local directory (e.g., `experiments/mlruns_tarikh`).
+1. Unzip `mlruns_saif_batch_16_lr_2e-5_epochs_10_dropout_0.1.zip` to a local directory (e.g., `experiments/mlruns_saif_batch_16_lr_2e-5_epochs_10_dropout_0.1.zip`).
 2. In VS Code or terminal: Navigate to the dir, activate venv, run:
    ```
    mlflow ui
@@ -64,10 +85,10 @@ Same as above, but use `python main.py ...` instead of `!python`.
 
 To collaborate with minimal effort:
 1. Fork the repo and clone to Colab/local.
-2. Open `experiments.py`: Copy a config (e.g., `{'batch_size': 32, 'learning_rate': 2e-5, 'num_epochs': 20, 'freeze_base': True}`).
-3. Run with your name and dataset: `!python main.py --batch 32 --lr 2e-5 --epochs 20 --author_name 'collaborator' --dataset_path 'your/path.csv' --freeze_base`
+2. Open `experiments.txt`: Select an experiment config (e.g., `{'batch_size': 32, 'learning_rate': 2e-5, 'num_epochs': 20, 'freeze_base': True}`).
+3. Run with your name and dataset: `!python main.py --batch 32 --lr 2e-5 --epochs 20 --author_name 'collaborator' --dataset_path 'your/path.csv' --freeze_base...`
 4. Zip/download `mlruns.zip`, view locally as above.
-5. Add new experiments? Edit `experiments.py` with your configs, commit, and PR.
+5. Add new experiments? Edit `experiments.txt` with your configs, commit, and PR.
 6. Issues/PRs: Welcome! Describe your changes (e.g., "Added new LR 1e-5 for better F1").
 
 For questions, open an issue.
