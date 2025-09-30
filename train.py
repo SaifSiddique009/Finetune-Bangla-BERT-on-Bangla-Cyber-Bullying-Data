@@ -315,7 +315,7 @@ def run_kfold_training(config, comments, labels, tokenizer, device):
                     # Save model if this fold is the best overall
                     if best_f1 > best_overall_f1:
                         best_overall_f1 = best_f1
-                        best_fold_idx = fold+1
+                        best_fold_idx = fold
                         best_fold_model = model.state_dict()
                 else:
                     patience_counter += 1
@@ -345,7 +345,7 @@ def run_kfold_training(config, comments, labels, tokenizer, device):
         best_fold_metrics = fold_results[best_fold_idx]
         
         # Log best overall metrics (maximum across all folds)
-        mlflow.log_metric('best_fold_index', best_fold_idx)
+        mlflow.log_metric('best_fold_index', best_fold_idx+1)
         
         # Log the best value for each metric across all folds
         for metric_name in ['accuracy', 'precision_weighted', 'precision_macro', 
@@ -367,11 +367,11 @@ def run_kfold_training(config, comments, labels, tokenizer, device):
             mlflow.pytorch.log_model(
                 final_model, 
                 name="model",
-                registered_model_name=f"bangla_cyberbully_model_fold{best_fold_idx}_f1_{best_overall_f1:.4f}"
+                registered_model_name=f"bangla_cyberbully_model_fold{best_fold_idx+1}_f1_{best_overall_f1:.4f}"
             )
             
             # Also save locally
-            model_filename = f"best_model_fold_{best_fold_idx}_f1_{best_overall_f1:.4f}.pt"
+            model_filename = f"best_model_fold_{best_fold_idx+1}_f1_{best_overall_f1:.4f}.pt"
             torch.save(best_fold_model, model_filename)
             print(f"\nModel saved: {model_filename}")
         
