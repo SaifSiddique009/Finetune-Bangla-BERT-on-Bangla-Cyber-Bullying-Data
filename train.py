@@ -260,8 +260,8 @@ def run_kfold_training(config, comments, labels, tokenizer, device):
             train_dataset = data.CyberbullyingDataset(train_comments, train_labels, tokenizer, config.max_length)
             val_dataset = data.CyberbullyingDataset(val_comments, val_labels, tokenizer, config.max_length)
             
-            train_loader = DataLoader(train_dataset, batch_size=config.batch, shuffle=True)
-            val_loader = DataLoader(val_dataset, batch_size=config.batch, shuffle=False)
+            train_loader = DataLoader(train_dataset, batch_size=config.batch, shuffle=True, num_workers=2, pin_memory=True)
+            val_loader = DataLoader(val_dataset, batch_size=config.batch, shuffle=False, num_workers=2, pin_memory=True)
             
             # Initialize model
             model = TransformerMultiLabelClassifier(config.model_path, len(data.LABEL_COLUMNS), dropout=config.dropout)
