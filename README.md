@@ -30,20 +30,20 @@ Run fine-tuning via `main.py` with command-line arguments. All experiments log t
 7. Run command (replace with your values):
    ```
    !python main.py \
-    --author_name "saif" \
-    --dataset_path "/kaggle/working/temp/1_Multilablel_Cyberbully_Data.csv" \
+    --author_name "your_name" \
+    --dataset_path "your_dataset_path" \
     --batch 32 \
     --lr 5e-5 \
     --epochs 2 \
-    --model_path "sagorsarker/bangla-bert-base" \
+    --model_path "model_name" \
     --stratification_type multilabel \
     --seed 42 \
-    --dropout 0.2 \
-    --weight_decay 0.02 \
-    --warmup_ratio 0.2 \
-    --gradient_clip_norm 2.0 \
-    --early_stopping_patience 2 \
-    --num_folds 2
+    --dropout 0.1 \
+    --weight_decay 0.01 \
+    --warmup_ratio 0.1 \
+    --gradient_clip_norm 1.0 \
+    --early_stopping_patience 5 \
+    --num_folds 5
    ```
    - Full args:
      - `--batch`: Batch size (e.g., 16, 32, 64).
