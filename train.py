@@ -12,7 +12,6 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import numpy as np
 from tqdm import tqdm
 import mlflow
-import os
 
 import data
 from model import TransformerMultiLabelClassifier
@@ -358,22 +357,22 @@ def run_kfold_training(config, comments, labels, tokenizer, device):
         mlflow.log_metric('best_loss', best_loss)
         
         # Save the best model from the best fold
-        if best_fold_model is not None:
-            # Create a new model instance and load the best weights
-            final_model = TransformerMultiLabelClassifier(config.model_path, len(data.LABEL_COLUMNS), dropout=config.dropout)
-            final_model.load_state_dict(best_fold_model)
+        # if best_fold_model is not None:
+        #     # Create a new model instance and load the best weights
+        #     final_model = TransformerMultiLabelClassifier(config.model_path, len(data.LABEL_COLUMNS), dropout=config.dropout)
+        #     final_model.load_state_dict(best_fold_model)
             
-            # Save model with MLflow
-            mlflow.pytorch.log_model(
-                final_model, 
-                name="model",
-                registered_model_name=f"bangla_cyberbully_model_fold{best_fold_idx+1}_f1_{best_overall_f1:.4f}"
-            )
+        #     # Save model with MLflow
+        #     mlflow.pytorch.log_model(
+        #         final_model, 
+        #         name="model",
+        #         registered_model_name=f"bangla_cyberbully_model_fold{best_fold_idx+1}_f1_{best_overall_f1:.4f}"
+        #     )
             
-            # Also save locally
-            model_filename = f"best_model_fold_{best_fold_idx+1}_f1_{best_overall_f1:.4f}.pt"
-            torch.save(best_fold_model, model_filename)
-            print(f"\nModel saved: {model_filename}")
+        #     # Also save locally
+        #     model_filename = f"best_model_fold_{best_fold_idx+1}_f1_{best_overall_f1:.4f}.pt"
+        #     torch.save(best_fold_model, model_filename)
+        #     print(f"\nModel saved: {model_filename}")
         
         # Print final experiment summary
         print_experiment_summary(best_fold_idx, best_fold_metrics, model_metrics)
